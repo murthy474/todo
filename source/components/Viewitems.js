@@ -1,20 +1,34 @@
 import React, { Component } from "react";
-import { View,Text,StyleSheet, ListView ,FlatList,TouchableOpacity} from "react-native";
+import { View,Text,StyleSheet, ListView ,FlatList,TouchableOpacity,TextInput} from "react-native";
 import PropTypes from "prop-types";
+import { Button,CheckBox} from 'react-native-elements';
 import { connect } from "react-redux";
 // import Item from "./Item";
 
+import Librarylist from './Librarylist';
+
 class Viewitems extends Component {
+
   constructor(props) {
     super(props);
     this.removeitem = this.removeitem.bind(this);
+    this.state = {
+      checked:false,showtext:'none',textdata:''
+  }
   }
 
   removeitem(id) {
     this.props.dispatch({ type: "REMOVE_ITEM", id });
   }
 
- 
+  edititem(name){
+          <Librarylist data={name}/>
+    }
+  checkboxposition(id, done){
+    this.props.dispatch({type:"index_value",id  })
+          // payload: { id, done }
+  }
+  
 render() {
     //   console.warn(this.props.dataSource._dataBlob.s1);
     return (
@@ -25,11 +39,30 @@ render() {
             keyExtractor={(item, index) => index}
             renderItem={({ item }) => {
                 return(
-                    <View style={{}}>
-                        <TouchableOpacity style={[{ height:40,width:400,backgroundColor: item.bgColor}]} 
-                         onPress={() =>this.removeitem(item.id)}>
+                  <View>
+                    <View style={{flexDirection:'row',margin:5}}>
+                      <View>
+                      <CheckBox
+                             title='click' 
+                             checked={!!item.done}
+                            onPress={() => this.checkboxposition(item.id, !item.done)}
+                          />
+                      </View>
+                        <View style={[{ marginTop:3,height:40,width:150,backgroundColor: item.bgColor}]}>
                             <Text style={{color:'red'}}>{item.name}</Text>
-                        </TouchableOpacity>
+                        </View>
+                        <View style={{marginTop:3,flexDirection:'row',height:40}}>
+                          <TouchableOpacity style={{backgroundColor:'#E6DDDD',marginHorizontal:10}}
+                            onPress={() =>this.edititem(item.name)}>
+                              <Text style={{fontSize:15,margin:5}}>EDIT</Text>
+                          </TouchableOpacity>
+                          <TouchableOpacity style={{backgroundColor:'#E6DDDD'}}
+                             onPress={() =>this.removeitem(item.id)}>
+                              <Text style={{fontSize:15,margin:5}}>DELETE</Text>                        
+                          </TouchableOpacity>
+                        </View>
+                    </View>
+                   
                     </View>
                 );
             }}

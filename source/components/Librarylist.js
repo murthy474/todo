@@ -1,17 +1,22 @@
 import React,{Component} from 'react';
 import {connect} from 'react-redux';
-import { View, Text,FlatList } from 'react-native';
-import { Button } from 'react-native-elements';
+import { View, Text,FlatList,TextInput, TouchableOpacity} from 'react-native';
+import { Button,CheckBox} from 'react-native-elements';
 import PropTypes from "prop-types";
 
-class Librarylist extends Component{
+// import Viewitems from './Viewitems';
 
+class Librarylist extends Component{
+    state={
+        text:'',textBool:'none',
+    }
+    static PropTypes = {
+        saticname:PropTypes.object.isRequired
+    }
     constructor(props) {
         super(props);
-    
-       
         this.addtolist = this.addtolist.bind(this);
-        this.randomizeItemData = this.randomizeItemData.bind(this);
+        // this.randomizeItemData = this.randomizeItemData.bind(this);
       }
 
     // renderdata(item){
@@ -25,23 +30,40 @@ class Librarylist extends Component{
     //     );
     // }
     addtolist() {
-        const randomizedItemData = this.randomizeItemData();
-        this.props.dispatch({ type: "ADD_ITEM", ...randomizedItemData});
+        this.setState({textBool:'flex'},()=>{})       
       }
 
+    addthetext(){
+          if(this.props.saticname){
+              this.setState({textBool:'flex',text:this.props.saticname})
+          }
+        if(this.state.text !==''){
+            const randomizedItemData = this.randomizeItemData();
+            this.props.dispatch({ type: "ADD_ITEM", ...randomizedItemData,});
+            this.setState({textBool:'none',text:''});
+        }else{
+            alert('enter the text');
+        }
+    }
       randomizeItemData() {
-      
-        let colorArr = ["#00FFFF", "#D8BFD8", "#28B490","	#87CEFA"];
-        let randColor = colorArr[Math.floor(Math.random() * colorArr.length)];
-    
-        let randNum = Math.floor(Math.random() * 10 + 1);
-        let randName = "Number" + randNum;
-    
-        return { name: randName, bgColor: randColor };
+        if(this.state.text){  
+            let colorArr = ["#00FFFF"];
+            let randColor = colorArr[Math.floor(Math.random() * colorArr.length)];
+           
+            // let randNum = Math.floor(Math.random() * 10 + 1);
+            // let randName = "Number" + randNum;
+        
+            return { name: this.state.text,
+                    bgColor: randColor,
+                 };
+            
+      }else{
+          return false;
       }
-      
+      }
+
     render(){
-        console.warn(this.props.library);
+        // console.warn(this.props.library);
         return(
             <View>
             <View style={{marginTop:30}}>
@@ -49,6 +71,18 @@ class Librarylist extends Component{
             large
             onPress={()=>{this.addtolist()}}
                 title='add to list' />
+                </View>
+                <View style={{marginTop:10,flexDirection:'row',display: this.state.textBool}}>
+                    <TextInput
+                            style={{height: 50,width:300, borderColor: 'gray', borderWidth: 1}}
+                            onChangeText={(text) => this.setState({text})}
+                            placeholder='enter the some text'
+                            value={this.state.text}
+                        />
+                        <TouchableOpacity style={{backgroundColor:'#E6DDDD'}} onPress={()=>{this.addthetext()}}>
+                            <Text style={{height:30,width:30,margin:10}}>GO</Text>
+                        </TouchableOpacity>
+                        
                 </View>
             {/* <View>
                  <FlatList
