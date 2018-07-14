@@ -1,0 +1,78 @@
+  // let array ={...state}
+        // // console.warn(array);
+        // const index = state.findIndex(x => x.id === action.id);
+        // let eleminatevalue = {...state.slice(0, index), ...state.slice(index + 1)};
+        // console.warn(eleminatevalue);
+        // return[eleminatevalue]
+        //  state.map(function(data,index)
+        // {
+        //       eleminatevalue.map(function(innerdata,index)
+        //     {
+        //           if(data.id===innerdata.id){
+        //             console.warn(innerdata,data);
+        //           }      
+        //     })
+        // })
+              // // let tempdata = state;
+       const index = state.findIndex(x => x.id === action.id);
+      // // // console.warn(index);
+       const selectedvalue =  [...state.splice(index,1)] 
+       console.warn(...state.concat(selectedvalue));
+       
+      // return[...state.slice(0, index), ...state.slice(index + 1),done]
+      // const { payload: { id, done } } = action
+      // state.map(function(data,index)
+      // {  
+      //   if(passeddata.payload.id === data.id){
+      //     console.warn(passeddata.payload.done)
+         
+      //     const index = state.findIndex(x => x.id === action.id);
+      //     let selcteddata = data;
+      //         return[...state.slice(0, index), ...state.slice(index + 1),done]
+      //   }else{
+      //     console.warn('else loop')
+      //   }
+      // })
+      // state.map(x => {
+      //   if (x.id === id) {
+      //     return {
+      //       ...x,
+      //       done,
+      //     }
+      //   }
+      //   return x
+      // })
+
+
+       // var arry = [...state]
+        // for (let i = 0; i < arry.length; i++) {
+        //   // console.warn(arry[i].name+)
+        //   if(action.payload.item.name === arry[i].name){
+        //         var eleminate = [arry[i]];
+        //         var index1 = indexOf(arry[i]);
+                
+        //         // var arry = [...state.slice()]
+        //       //  return [arry.concat(eleminate)];
+        //   }else {
+        //     console.warn('else ',i);
+        //   }
+        }
+        // console.warn(action);
+        // var index = arry.indexOf(action.payload.item.name);
+        // console.warn(index+action.payload.item.name);        
+        // var elimanate = arry.slice(index,index+1);
+        // return [elimanate];
+        // const index = state.findIndex(x => x.id === action.id);
+        // const selectedvalue =  [...state.slice(0, index), ...state.slice(index + 1)]
+        // //  console.warn(...state.concat(selectedvalue));...state.concat(selectedvalue)...state.splice(index,1)
+        // return [...state.slice(0, index), ...state.slice(index + 1)];
+
+
+
+
+
+         //const updatedTodos = state.todos.filter( e => e.key !== action.itemKey)
+        const array = [...state]
+        const deletedItem = array.splice( array.indexOf(action.item) , 1 )
+        const updatedTodos = array.concat({...deletedItem[0], done: true});
+        return {...state, array : updatedTodos}

@@ -11,8 +11,8 @@ const items = (state = [], action) => {
         {
           id: nextItemId++,
           name: action.name,
-          bgColor: action.bgColor
-          
+          bgColor: action.bgColor,
+          done:false
         },
       ];
     }
@@ -22,49 +22,62 @@ const items = (state = [], action) => {
       const index = state.findIndex(x => x.id === action.id);
       return [...state.slice(0, index), ...state.slice(index + 1)];
     }
-    case "index_value":{
-        let array ={...state}
-        // console.warn(array);
-        const index = state.findIndex(x => x.id === action.id);
-        let eleminatevalue = {...state.slice(0, index), ...state.slice(index + 1)};
-        // console.warn(eleminatevalue);
-        // return[eleminatevalue]
-        //  state.map(function(data,index)
-        // {
-        //       eleminatevalue.map(function(innerdata,index)
-        //     {
-        //           if(data.id===innerdata.id){
-        //             console.warn(innerdata,data);
-        //           }      
-        //     })
-        // })
-              // // let tempdata = state;
-      // const index = state.findIndex(x => x.id === action.id);
-      // // // console.warn(index);
-      // let selectedvalue =  [...state.splice(index,1)] 
-      // return[...state.slice(0, index), ...state.slice(index + 1),done]
-      // const { payload: { id, done } } = action
-      // state.map(function(data,index)
-      // {  
-      //   if(passeddata.payload.id === data.id){
-      //     console.warn(passeddata.payload.done)
-         
-      //     const index = state.findIndex(x => x.id === action.id);
-      //     let selcteddata = data;
-      //         return[...state.slice(0, index), ...state.slice(index + 1),done]
-      //   }else{
-      //     console.warn('else loop')
-      //   }
-      // })
-      state.map(x => {
-        if (x.id === id) {
-          return {
-            ...x,
-            done,
+    case "checkvalue": {
+      if(action.payload.done){
+        
+        var arry = [...state]
+        var index = arry.indexOf(action.payload.item);        
+        var elimanate = arry.splice(index,1);
+        var boolcondition = [];
+          for (let i = 0; i < elimanate.length; i++) {
+            if(action.payload.item.name === elimanate[i].name){ 
+               elimanate[i].bgColor='#FFA500'
+               elimanate[i].done =action.payload.done
+                boolcondition.push(elimanate[i])
+            }else false;
           }
+         
+        var finalarry = arry.concat(boolcondition);
+        return [
+          ...state=finalarry];
+        
+      }else {
+        var arry = [...state]
+        var index = arry.indexOf(action.payload.item);        
+        var elimanate = arry.splice(index,1);
+        var boolcondition = [];
+          for (let i = 0; i < elimanate.length; i++) {
+            if(action.payload.item.name === elimanate[i].name){ 
+              elimanate[i].bgColor='#00FFFF'
+               elimanate[i].done =action.payload.done
+                boolcondition.push(elimanate[i])
+            }else false;
+          }
+        
+        var finalarry = arry.concat(boolcondition);             
+        // splice(0, 0, boolcondition)
+      //  console.warn(finalarry);
+        return [
+          ...state=finalarry];
+      }
+    }
+    case "edit_item":{
+     return action.payload  
+    }
+    case "updte_item":{
+      console.warn(action.payload);
+      var arry = [...state]        
+      var boolcondition = [];
+        for (let i = 0; i < arry.length; i++) {
+          if(action.payload.id === arry[i].id){ 
+            arry[i].name =action.payload.value
+              boolcondition.push(arry[i]);
+              console.warn(arry);
+               var finalarry = arry      
+          }else false;
         }
-        return x
-      })
+        return [
+          ...state=finalarry];
     }
     default:
       return state;

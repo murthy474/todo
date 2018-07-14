@@ -21,19 +21,25 @@ class Viewitems extends Component {
     this.props.dispatch({ type: "REMOVE_ITEM", id });
   }
 
-  edititem(name){
-          <Librarylist data={name}/>
+  edititem(data){
+    this.props.navigation.navigate('Librarylist',{editdata:data.name,editid:data.id});
+    // this.props.dispatch({type:"edit_item",payload: { id, name }  })
+    // payload: { id, done }
     }
-  checkboxposition(id, done){
-    this.props.dispatch({type:"index_value",id  })
-          // payload: { id, done }
+  checkboxposition(item, done){
+    this.props.dispatch({type: "checkvalue",payload:{item,done} });
   }
-  
+
 render() {
     //   console.warn(this.props.dataSource._dataBlob.s1);
+    const { goBack } = this.props.navigation;
     return (
         <View style={{width:'100%'}}>
-        
+          <View style={{width:'100%',height:50,backgroundColor:'white'}}>
+            <TouchableOpacity style={{margin:15}}  onPress={() => goBack()}>
+             <Text style={{fontSize:16,}}> BACK </Text> 
+            </TouchableOpacity>
+          </View>
             <FlatList
             data={this.props.dataSource}
             keyExtractor={(item, index) => index}
@@ -43,17 +49,18 @@ render() {
                     <View style={{flexDirection:'row',margin:5}}>
                       <View>
                       <CheckBox
-                             title='click' 
-                             checked={!!item.done}
-                            onPress={() => this.checkboxposition(item.id, !item.done)}
+                             title='click'
+                             checked={item.done}
+                            onPress={() => this.checkboxposition(item, !item.done)}
                           />
+                          {/* {console.warn(!item.done)} */}
                       </View>
                         <View style={[{ marginTop:3,height:40,width:150,backgroundColor: item.bgColor}]}>
                             <Text style={{color:'red'}}>{item.name}</Text>
                         </View>
                         <View style={{marginTop:3,flexDirection:'row',height:40}}>
                           <TouchableOpacity style={{backgroundColor:'#E6DDDD',marginHorizontal:10}}
-                            onPress={() =>this.edititem(item.name)}>
+                            onPress={() =>this.edititem(item)}>
                               <Text style={{fontSize:15,margin:5}}>EDIT</Text>
                           </TouchableOpacity>
                           <TouchableOpacity style={{backgroundColor:'#E6DDDD'}}

@@ -8,15 +8,15 @@ import PropTypes from "prop-types";
 
 class Librarylist extends Component{
     state={
-        text:'',textBool:'none',
+        text:'',textBool:'none',itemdetails:'',button:'GO'
     }
-    static PropTypes = {
-        saticname:PropTypes.object.isRequired
-    }
-    constructor(props) {
-        super(props);
-        this.addtolist = this.addtolist.bind(this);
-        // this.randomizeItemData = this.randomizeItemData.bind(this);
+    
+   componentWillMount(){
+        this.addtolist = this.addtolist.bind(this);  
+        // console.warn(this.props.getParam('editdata'));
+        //  this.setState({itemdetails:this.props.navigation.state},()=>{
+        //      console.warn(this.state.itemdetails)});                            
+        this.randomizeItemData = this.randomizeItemData.bind(this);
       }
 
     // renderdata(item){
@@ -30,21 +30,28 @@ class Librarylist extends Component{
     //     );
     // }
     addtolist() {
-        this.setState({textBool:'flex'},()=>{})       
+        this.setState({textBool:'flex',text:'',button:''},()=>{})       
       }
 
-    addthetext(){
-          if(this.props.saticname){
-              this.setState({textBool:'flex',text:this.props.saticname})
-          }
-        if(this.state.text !==''){
+    addthetext(value,id){
+        if(value==='undefined'|| ''  && id ==='undefined'|| ''){
+            this.setState({text:''});            
+        }else if(value ){
+           let value = this.state.text;
+            this.props.dispatch({ type: "updte_item", payload:{value,id}});
+            this.setState({text:'',button:''});
+            this.props.navigation.navigate('Viewitems')
+           
+        }else if(this.state.text !==''){
             const randomizedItemData = this.randomizeItemData();
             this.props.dispatch({ type: "ADD_ITEM", ...randomizedItemData,});
-            this.setState({textBool:'none',text:''});
+            this.setState({text:''});
+            this.props.navigation.navigate('Viewitems')
         }else{
             alert('enter the text');
         }
     }
+
       randomizeItemData() {
         if(this.state.text){  
             let colorArr = ["#00FFFF"];
@@ -56,14 +63,25 @@ class Librarylist extends Component{
             return { name: this.state.text,
                     bgColor: randColor,
                  };
-            
       }else{
           return false;
       }
       }
-
-    render(){
-        // console.warn(this.props.library);
+      valueitem(naming){
+            if(naming == ''){
+                valueitem.push('');
+            }else{
+                 return naming;  
+                 let naming = ''
+                 valueitem.push(naming);
+            }
+        }
+    render(){ 
+    //    console.log(valueitem);
+    let {navigation} = this.props;
+       let valueitem = navigation.getParam('editdata');
+       let itemid =navigation.getParam('editid')
+        // console.warn(valueitem);
         return(
             <View>
             <View style={{marginTop:30}}>
@@ -72,18 +90,17 @@ class Librarylist extends Component{
             onPress={()=>{this.addtolist()}}
                 title='add to list' />
                 </View>
-                <View style={{marginTop:10,flexDirection:'row',display: this.state.textBool}}>
+                <View style={{marginTop:10,marginLeft:20,flexDirection:'row',display: this.state.textBool}}>
                     <TextInput
                             style={{height: 50,width:300, borderColor: 'gray', borderWidth: 1}}
-                            onChangeText={(text) => this.setState({text})}
+                            onChangeText={(text) => this.setState({text })}
                             placeholder='enter the some text'
-                            value={this.state.text}
+                            value={this.state.text ? this.state.text :valueitem }
                         />
-                        <TouchableOpacity style={{backgroundColor:'#E6DDDD'}} onPress={()=>{this.addthetext()}}>
-                            <Text style={{height:30,width:30,margin:10}}>GO</Text>
+                        <TouchableOpacity style={{backgroundColor:'#E6DDDD'}} onPress={()=>{this.addthetext(valueitem,itemid)}}>
+                            <Text style={{height:30,width:40,margin:10}}>{ this.state.button  ? 'update' :'GO'}</Text>
                         </TouchableOpacity>
-                        
-                </View>
+                </View>z
             {/* <View>
                  <FlatList
                                   data={this.props.library}
@@ -96,7 +113,8 @@ class Librarylist extends Component{
     }
 }
 Librarylist.propTypes = {
-    dispatch: PropTypes.func
+    dispatch: PropTypes.func,
+
   };
 
 // const mapStateToProps = state =>{

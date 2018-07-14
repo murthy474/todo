@@ -1,12 +1,12 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import Main from './source/Main';
+import Router from './source/Main';
 
 export default class App extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-       <Main />
+       <Router />
       </View>
     );
   }

@@ -5,9 +5,9 @@ import { applyMiddleware,createStore} from 'redux';
 import reducers from './reducers/Index';
 
 
-import Librarylist from './components/Librarylist';
+import Router from './Router';
 
-import Viewitems from "./components/Viewitems";
+// import Viewitems from "./components/Viewitems";
 
 
 export default class Main extends React.Component {
@@ -20,11 +20,9 @@ export default class Main extends React.Component {
 render(){
     return(
         <Provider store={createStore(reducers)}>
-        <View style={{flex:1}}>
-                    
-            <Librarylist/>
-          
-            <Viewitems />
+        <View style={{width:400,flex:1,alignSelf:'center',backgroundColor:'white'}}>
+            <Text>    </Text>
+            <Router/>
         </View> 
         </Provider> 
     );
